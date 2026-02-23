@@ -544,7 +544,7 @@
     <script src="globe.js"></script>
     <script src="script.js"></script>
 
-    <!-- Contact Form: Formspree submission handler -->
+    <!-- Contact Form: FormSubmit.co submission handler -->
     <script>
         const contactForm = document.getElementById('contactForm');
         const submitBtn = document.getElementById('submitBtn');
@@ -559,9 +559,11 @@
             errorMsg.style.display = 'none';
 
             const data = new FormData(contactForm);
+            data.append('_subject', 'New Inquiry from Genhtis Website');
+            data.append('_captcha', 'false');
 
             try {
-                const response = await fetch('https://formspree.io/f/info@genhtis.com', {
+                const response = await fetch('https://formsubmit.co/ajax/info@genhtis.com', {
                     method: 'POST',
                     body: data,
                     headers: { 'Accept': 'application/json' }
