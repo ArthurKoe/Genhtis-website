@@ -271,8 +271,8 @@ img {
 .hero__video-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(60, 60, 60, 0.5);
-    /* grey transparent layer */
+    background: rgba(128, 128, 128, 0.5);
+    /* grey half transparent layer */
 }
 
 .hero__content {
