@@ -157,6 +157,40 @@
     </section>
 
     <!-- ===== UNIFIED NARRATIVE: HEPARIN TO GLOBE ===== -->
+    <section class="section section--dark" id="heparin">
+        <div class="container container--relative" style="padding-top: 5vh; padding-bottom: 0vh;">
+            <div class="section__header">
+                <span class="section__label">First Focus</span>
+            </div>
+            <div class="split">
+                <div class="split__left">
+                    <h2 class="headline headline--xl">Heparin.</h2>
+                    <p class="body-text">Heparin is one of the most widely used anticoagulants in modern
+                        medicine.
+                        It is
+                        essential for cardiac surgery, dialysis, trauma care, and critical interventions across
+                        every
+                        major hospital system. Today, the global supply of heparin raw material is concentrated
+                        in a
+                        single region, creating a strategic vulnerability that affects millions of patients
+                        annually.
+                    </p>
+                    <p class="body-text">Genhtis has selected heparin as its first critical medicine. A proven
+                        need.
+                        A
+                        clear vulnerability. A solvable problem.</p>
+                    <a href="#contact" class="btn btn--outline" style="margin-top: 2rem;">Learn more</a>
+                </div>
+                <div class="split__right split__right--with-image">
+                    <!-- Dynamic rendered heparin molecule video -->
+                    <video class="heparin-molecule-media" src="Images/heparin-video.mp4" autoplay loop muted
+                        playsinline></video>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== UNIFIED NARRATIVE: GLOBE ===== -->
     <div class="globe-scroll-container">
         <div class="globe-sticky">
             <div class="container container--relative" id="security-header"
@@ -168,57 +202,10 @@
             </div>
             <div class="pointcloud-wrap">
                 <canvas id="pointcloudCanvas"></canvas>
-                <div class="pointcloud-labels">
-                    <span class="pointcloud-label" style="top: 28%; left: 18%;">North America</span>
-                    <span class="pointcloud-label" style="top: 24%; left: 52%;">Europe</span>
-                    <span class="pointcloud-label pointcloud-label--accent" style="top: 50%; left: 36%;">Secured
-                        Supply Corridor</span>
-                </div>
             </div>
         </div>
 
         <div class="globe-content">
-            <section class="section section--dark" id="heparin">
-                <div class="container container--relative" style="padding-top: 5vh; padding-bottom: 0vh;">
-                    <div class="section__header">
-                        <span class="section__label">First Focus</span>
-                    </div>
-                    <div class="split">
-                        <div class="split__left">
-                            <h2 class="headline headline--xl">Heparin.</h2>
-                            <p class="body-text">Heparin is one of the most widely used anticoagulants in modern
-                                medicine.
-                                It is
-                                essential for cardiac surgery, dialysis, trauma care, and critical interventions across
-                                every
-                                major hospital system. Today, the global supply of heparin raw material is concentrated
-                                in a
-                                single region, creating a strategic vulnerability that affects millions of patients
-                                annually.
-                            </p>
-                            <p class="body-text">Genhtis has selected heparin as its first critical medicine. A proven
-                                need.
-                                A
-                                clear vulnerability. A solvable problem.</p>
-                            <a href="#contact" class="btn btn--outline" style="margin-top: 2rem;">Learn more</a>
-                        </div>
-                        <div class="split__right">
-                            <!-- Space for the spinning heparin molecule -->
-                            <div class="stat-grid stat-grid--molecule-offset">
-                                <div class="stat-card" data-animate>
-                                    <span class="stat-card__value">Essential</span>
-                                    <span class="stat-card__label">WHO Essential Medicines List</span>
-                                </div>
-                                <div class="stat-card" data-animate>
-                                    <span class="stat-card__value">Concentrated</span>
-                                    <span class="stat-card__label">Global supply from a single region</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             <!-- Section 2 (Globe state) -->
             <section class="section section--dark" id="security">
                 <!-- Internal Animation Spacer: Gives the globe time to animate its breakdown -->
@@ -467,7 +454,7 @@
                         partners, health systems, investors, and prospective team members.</p>
                     <p class="contact-email">info@genhtis.com</p>
                 </div>
-                <form class="contact-form" id="contactForm">
+                <form class="contact-form" id="contactForm" name="contact" method="POST" data-netlify="true">
                     <div class="form-group">
                         <label for="inquiry-type">Inquiry Type</label>
                         <select id="inquiry-type" name="inquiry-type" required>

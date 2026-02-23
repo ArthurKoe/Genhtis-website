@@ -730,55 +730,11 @@
         });
     }
 
-    // Give each point a starting position shaped like a stylized Heparin space-filling model
-    points.forEach(p => p.mT = Math.random());
-
-    // Define a 3D skeleton for the '7' shape (X, Y, Z, Radius)
-    const moleculeSkeleton = [
-        // Top hook (left to right)
-        [-1.8, 1.5, 0.5, 0.45],
-        [-1.2, 1.7, 0.3, 0.50],
-        [-0.5, 1.8, 0.0, 0.55],
-        [0.2, 1.7, -0.2, 0.50],
-        [0.8, 1.4, -0.4, 0.45],
-        [1.2, 0.9, -0.2, 0.45],
-        // Corner joint (bulky)
-        [1.0, 0.2, 0.0, 0.60],
-        // Main diagonal trunk (top right down to bottom left)
-        [0.6, -0.4, 0.1, 0.50],
-        [0.2, -1.0, 0.2, 0.55],
-        [-0.2, -1.6, 0.1, 0.50],
-        [-0.6, -2.1, 0.0, 0.45],
-        [-1.0, -2.6, -0.1, 0.50],
-        [-1.5, -3.0, -0.2, 0.55]
-    ];
-
-    points.forEach((p, i) => {
-        // Assign each particle to one of the "atoms" evenly
-        const atomIdx = i % moleculeSkeleton.length;
-        const [cx, cy, cz, baseRadius] = moleculeSkeleton[atomIdx];
-
-        // Add a tiny bit of random drift to the center so they aren't totally uniform
-        const seed = atomIdx * 123.45 + i;
-        const driftX = Math.sin(seed * 0.1) * 0.15;
-        const driftY = Math.cos(seed * 0.15) * 0.15;
-        const driftZ = Math.sin(seed * 0.2) * 0.15;
-
-        // Randomly adjust the radius for this specific point to create a lumpy surface
-        // Using pow(random, 0.5) ensures they pack efficiently towards the surface of the sphere
-        const r = baseRadius * Math.pow(Math.random(), 0.5) * (0.8 + Math.random() * 0.3);
-
-        // Random spherical coordinates
-        const theta = Math.random() * Math.PI * 2;
-        const phi = Math.acos(2 * Math.random() - 1);
-
-        const pointOffX = r * Math.sin(phi) * Math.cos(theta);
-        const pointOffY = r * Math.sin(phi) * Math.sin(theta);
-        const pointOffZ = r * Math.cos(phi);
-
-        p.sx = cx + driftX + pointOffX;
-        p.sy = cy + driftY + pointOffY;
-        p.sz = cz + driftZ + pointOffZ;
+    // Points are just initialized at their globe positions since the molecule transition is gone
+    points.forEach(p => {
+        p.sx = p.x;
+        p.sy = p.y;
+        p.sz = p.z;
     });
 
     // Supply Flow Particles (moving along connection arcs)
@@ -851,49 +807,24 @@
 
         mouseInf += (mouseTgt - mouseInf) * 0.04;
 
-        let formedness, ya, globalArcAlpha, corridorArcAlpha, breakProgress;
+        let formedness = 1, globalArcAlpha, corridorArcAlpha, breakProgress;
         const curScale = { mod: 1, offX: 0, offY: 0 };
 
         /**
-         * Unified 5-Phase Narrative (Natural Scrolling w/ Animation Space):
-         * P0: Heparin Molecule (0.0 -> 0.08) - Molecule visible next to Heparin text
-         * P1: Transformation (0.08 -> 0.25) - Rapid transform into globe while transitioning sections
-         * P2: Global Network (0.25 -> 0.45) - Security header appears, connections active
-         * P3: Breakdown (0.45 -> 0.85) - Expanded narrative of breakdown during the 250vh spacer
-         * P4: Locked Corridor (0.85 -> 1.0) - Transatlantic bridge focus 
+         * 3-Phase Narrative (Natural Scrolling w/ Animation Space):
+         * P1: Global Network (0.0 -> 0.3) - Security header active, connections active
+         * P2: Breakdown (0.3 -> 0.7) - Expanded narrative of breakdown during the 250vh spacer
+         * P3: Locked Corridor (0.7 -> 1.0) - Transatlantic bridge focus 
          */
-        const P0_END = 0.08;
-        const P1_END = 0.25;
-        const P2_END = 0.45;
-        const P3_END = 0.85;
+        const P1_END = 0.3;
+        const P2_END = 0.7;
 
         let xa = 0.22; // Default tilt
+        let ya = 0;
 
-        if (scrollProgress <= P0_END) {
-            // Phase 0: Heparin Molecule
-            formedness = 0;
-            ya = autoRot + mouseInf;
-            globalArcAlpha = 0;
-            corridorArcAlpha = 0;
-            breakProgress = 0;
-            curScale.mod = 0.5; // Made molecule smaller
-            curScale.offX = W * 0.25; // Reduced offset slightly to match smaller size
-            curScale.offY = 0;
-        } else if (scrollProgress <= P1_END) {
-            // Phase 1: Transformation (Molecule -> Globe)
-            const p = (scrollProgress - P0_END) / (P1_END - P0_END);
-            formedness = smoothStep(p);
-            ya = autoRot * (1 - p) + mouseInf;
-            globalArcAlpha = 0;
-            corridorArcAlpha = 0;
-            breakProgress = 0;
-            curScale.mod = 0.5 + (p * 0.35); // Scale from 0.5 up to 0.85
-            curScale.offX = (W * 0.25) * (1 - p); // Shift to center
-            curScale.offY = (H * 0.25) * p; // Shift downwards as it transforms into the globe
-        } else if (scrollProgress <= P2_END) {
-            // Phase 2: Global Supply Chains
-            formedness = 1;
-            const p = (scrollProgress - P1_END) / (P2_END - P1_END);
+        if (scrollProgress <= P1_END) {
+            // Phase 1: Global Supply Chains
+            const p = scrollProgress / P1_END;
             ya = p * Math.PI * 2.0 + mouseInf;
             const arcFadeIn = Math.min(1, p * 3);
             globalArcAlpha = arcFadeIn;
@@ -901,10 +832,9 @@
             breakProgress = 0;
             curScale.mod = 0.85;
             curScale.offY = H * 0.15; // Raised slightly to sit closer to the header
-        } else if (scrollProgress <= P3_END) {
-            // Phase 3: Connections break
-            formedness = 1;
-            const p = (scrollProgress - P2_END) / (P3_END - P2_END);
+        } else if (scrollProgress <= P2_END) {
+            // Phase 2: Connections break
+            const p = (scrollProgress - P1_END) / (P2_END - P1_END);
             ya = Math.PI * 2.0 + p * Math.PI * 1.5 + mouseInf;
             globalArcAlpha = 1 - easeOutCubic(p);
             corridorArcAlpha = 1;
@@ -912,9 +842,8 @@
             curScale.mod = 0.85;
             curScale.offY = H * 0.15;
         } else {
-            // Phase 4: Locked Corridor Zoom
-            formedness = 1;
-            const p = (scrollProgress - P3_END) / (1 - P3_END);
+            // Phase 3: Locked Corridor Zoom
+            const p = (scrollProgress - P2_END) / (1 - P2_END);
             const easeP = smoothStep(p); // smooth easing for zoom
 
             // Base rotation at start of this phase is Math.PI * 3.5
@@ -935,21 +864,18 @@
             // Shift Y offset down so the zoomed top half stays roughly in the middle of screen
             curScale.offY = (H * 0.15) + (easeP * H * 0.35);
         }
+
         // Reset connection paths each frame to prevent "ghost" particles 
         for (const conn of connections) conn.path = null;
 
         // Update label opacity
         if (labelsEl) {
-            labelsEl.style.opacity = formedness < 0.8 ? 0 : ((formedness - 0.8) / 0.2);
+            labelsEl.style.opacity = 1;
         }
 
-        // Update security header opacity (fade in during phase 2)
+        // Update security header opacity
         if (securityHeader) {
-            if (scrollProgress < P1_END) {
-                securityHeader.style.opacity = 0;
-            } else {
-                securityHeader.style.opacity = 1;
-            }
+            securityHeader.style.opacity = 1;
         }
 
         const pr = points.map(p => {

@@ -550,7 +550,17 @@ img {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 4rem;
-    align-items: start;
+    align-items: stretch;
+    /* Stretch so both columns are equal height */
+}
+
+.split__right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Center image nicely */
+    align-items: flex-end;
+    /* Align contents to the right */
 }
 
 .stat-grid {
@@ -559,6 +569,43 @@ img {
     gap: 1px;
     background: var(--border);
     border: 1px solid var(--border);
+}
+
+.heparin-molecule-media {
+    width: 125%;
+    max-width: 650px;
+    margin: 0 -3rem 0 auto;
+    /* Pull it slightly to the right to let it grow bigger without squishing the left text */
+    display: block;
+    mix-blend-mode: lighten;
+    filter: drop-shadow(0 0 40px rgba(210, 185, 140, 0.15));
+    animation: float 6s ease-in-out infinite;
+    z-index: 1;
+    position: relative;
+    pointer-events: none;
+    /* Let clicks pass through if it overlaps text */
+}
+
+.stat-grid--molecule-offset {
+    width: 70%;
+    /* Make the box significantly less wide */
+    position: relative;
+    z-index: 2;
+    /* Removed all hardcoded negative margin offsets to rely on flexbox alignment */
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-10px) rotate(1deg);
+    }
+
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
 }
 
 .stat-card {
