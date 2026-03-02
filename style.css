@@ -797,6 +797,13 @@ img {
     /* No inversion since the logo might already be white */
     mix-blend-mode: normal;
     /* In case it's just a white transparent PNG */
+    opacity: 0.5;
+    /* Lowered opacity slightly to match the visual weight of other logos */
+}
+
+.social-proof__logo:hover.social-proof__logo--whu img {
+    opacity: 0.7;
+    /* Adjusted hover state as well */
 }
 
 /* ===== PARTNER TILES ===== */
