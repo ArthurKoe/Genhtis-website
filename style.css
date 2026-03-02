@@ -792,6 +792,13 @@ img {
     opacity: 0.9;
 }
 
+.social-proof__logo--whu img {
+    filter: none;
+    /* No inversion since the logo might already be white */
+    mix-blend-mode: normal;
+    /* In case it's just a white transparent PNG */
+}
+
 /* ===== PARTNER TILES ===== */
 .partner-tiles {
     display: grid;
